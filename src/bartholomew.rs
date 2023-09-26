@@ -46,8 +46,8 @@ pub fn render(req: Request) -> Result<Response> {
 
     let base_url = std::env::var(BASE_URL_ENV);
 
-    if base_url.is_ok() {
-        config.base_url = Some(base_url.unwrap());
+    if let Ok(bb) = base_url {
+        config.base_url = Some(bb);
     }
     eprintln!("Base URL: {:?}", &config.base_url);
 
