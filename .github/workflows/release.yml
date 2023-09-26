@@ -47,7 +47,7 @@ jobs:
               extension: "",
               buildArgs: "--target aarch64-apple-darwin",
               target: "aarch64-apple-darwin",
-              targetDir: "target/aarch64-apple-darwin/release/",
+              targetDir: "target/aarch64-apple-darwin/release",
             }
           - {
               os: "windows-latest",
@@ -97,6 +97,8 @@ jobs:
 
       - name: Build bart
         run: cargo build --release --manifest-path=bart/Cargo.toml ${{ matrix.config.extraArgs }}
+      - name: What is happening
+        run: ls -l -a target
 
       - name: package release assets
         if: runner.os != 'Windows'
