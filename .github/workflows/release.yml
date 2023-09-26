@@ -92,13 +92,13 @@ jobs:
           echo 'rustflags = ["-Ctarget-feature=+fp16"]' >> ${HOME}/.cargo/config.toml
 
       - name: Build WASM
-        if: matrix.buildWasm
+        if: matrix.config.buildWasm
         run: make build
       - name: What is happening again
-        if: matrix.buildWasm
+        if: matrix.config.buildWasm
         run: ls -l -a target
       # - name: Upload WASM as GitHub artifact
-        # if: matrix.buildWasm
+        # if: matrix.config.buildWasm
         # uses: actions/upload-artifact@v3
         # with:
         #   name: bart # TODO: ??? bartholomew.wasm
@@ -130,7 +130,7 @@ jobs:
             bart${{ matrix.config.extension }}
 
       - name: upload binary as GitHub artifact
-        if: matrix.buildWasm
+        if: matrix.config.buildWasm
         uses: actions/upload-artifact@v3
         with:
           name: bart
@@ -139,7 +139,7 @@ jobs:
             _dist/bart-${{ env.RELEASE_VERSION }}-${{ env.RUNNER_OS }}-${{ matrix.config.arch }}.tar.gz
 
       - name: upload binary as GitHub artifact
-        if: runner.os != 'Windows' && !matrix.buildWasm
+        if: runner.os != 'Windows' && !matrix.config.buildWasm
         uses: actions/upload-artifact@v3
         with:
           name: bart
