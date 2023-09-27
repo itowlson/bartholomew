@@ -91,18 +91,15 @@ jobs:
           echo 'linker = "aarch64-linux-gnu-gcc"' >> ${HOME}/.cargo/config.toml
           echo 'rustflags = ["-Ctarget-feature=+fp16"]' >> ${HOME}/.cargo/config.toml
 
-      - name: Build WASM
+      - name: Build Wasm
         if: matrix.config.buildWasm
         run: make build
-      - name: What is happening again
+      - name: Upload Wasm as GitHub artifact
         if: matrix.config.buildWasm
-        run: ls -l -a target
-      # - name: Upload WASM as GitHub artifact
-        # if: matrix.config.buildWasm
-        # uses: actions/upload-artifact@v3
-        # with:
-        #   name: bart # TODO: ??? bartholomew.wasm
-        #   path: target/wasm32-wasi/release/bartholomew.wasm
+        uses: actions/upload-artifact@v3
+        with:
+          name: bart
+          path: target/wasm32-wasi/release/bartholomew.wasm
 
       - name: Build bart
         run: cargo build --release --manifest-path=bart/Cargo.toml ${{ matrix.config.extraArgs }}
@@ -130,16 +127,7 @@ jobs:
             bart${{ matrix.config.extension }}
 
       - name: upload binary as GitHub artifact
-        if: matrix.config.buildWasm
-        uses: actions/upload-artifact@v3
-        with:
-          name: bart
-          path: |
-            target/wasm32-wasi/release/bartholomew.wasm
-            _dist/bart-${{ env.RELEASE_VERSION }}-${{ env.RUNNER_OS }}-${{ matrix.config.arch }}.tar.gz
-
-      - name: upload binary as GitHub artifact
-        if: runner.os != 'Windows' && !matrix.config.buildWasm
+        if: runner.os != 'Windows'
         uses: actions/upload-artifact@v3
         with:
           name: bart
