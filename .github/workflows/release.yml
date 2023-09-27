@@ -171,10 +171,3 @@ jobs:
         with:
           name: bart
           path: checksums-${{ env.RELEASE_VERSION }}.txt
-
-      - name: upload checksums to Github release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: checksums-${{ env.RELEASE_VERSION }}.txt
-          tag: ${{ github.ref }}
